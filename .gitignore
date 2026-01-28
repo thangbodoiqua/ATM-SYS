@@ -1,0 +1,40 @@
+# === Java & Compiled files ===
+*.class
+*.log
+*.war
+*.ear
+*.zip
+*.tar.gz
+
+# Loại bỏ các file class được biên dịch vào thư mục build hoặc bin
+bin/
+build/
+dist/
+target/
+
+# === IDE Specific (Eclipse) ===
+.settings/
+.project
+.classpath
+.metadata/
+.recommenders/
+RemoteSystemsTempFiles/
+.externalToolBuilders/
+*.launch
+
+# === IDE Specific (IntelliJ IDEA) ===
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# === Web Server (Tomcat) ===
+# Loại bỏ các file cấu hình server cục bộ của IDE
+Servers/
+.deployables/
+.wtpmodules/
+
+# === OS Specific ===
+.DS_Store
+Thumbs.db

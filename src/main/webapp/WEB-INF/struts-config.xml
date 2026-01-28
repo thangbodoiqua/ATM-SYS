@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <!DOCTYPE struts-config PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+    "http://struts.apache.org/dtds/struts-config_1_3.dtd">   -->
+<struts-config>
+
+    <form-beans>       	
+		<form-bean name="enterCardForm" type="com.demo.form.atm.EnterCardForm"/>
+		<form-bean name="enterPinForm"  type="com.demo.form.atm.EnterPinForm"/>
+	        	
+    </form-beans>
+
+ 	<action-mappings>
+ 	<!-- Route test  -->
+ 		
+
+		    <action path="/alo"
+		            type="com.demo.action.AdminAction"
+		            name="adminForm"
+		            scope="request"
+		            forward="/test.jsp">
+		        <forward name="success" path="/test.jsp"/>
+		    </action>
+		    <action path="/ping" forward="/test.jsp"/>
+		    
+	 <!--  -->
+		    
+		    
+		<!-- home -->
+		<action path="/home" type="com.demo.action.HomeAction">
+            <forward name="home" path="/WEB-INF/jsp/home.jsp"/>
+        </action>
+        
+        
+        <!-- Enter Card -->
+		<action path="/auth/enter-card"
+	            type="com.demo.action.auth.EnterCardAction"
+	            name="enterCardForm"
+	            scope="request"
+	            input="/WEB-INF/jsp/auth/enter-card.jsp">
+	        <forward name="enterPin" path="/WEB-INF/jsp/auth/enter-card.jsp"/>
+	    </action>
+	
+	    <!-- Enter PIN -->
+	    <action path="/auth/enter-pin"
+	            type="com.demo.action.auth.EnterPinAction"
+	            name="enterPinForm"
+	            scope="request"
+	            input="/WEB-INF/jsp/auth/enter-pin.jsp">
+	        <forward name="next" path="/atm/transaction.do" redirect="true"/>
+	    </action>
+
+
+
+
+        <!--  -->
+ 		<action path="/atm"
+	            type="com.demo.action.atm.MenuAction">
+	        <forward name="next" path="/WEB-INF/jsp/atm/menu.jsp" redirect="true"/>
+	    </action>
+	    
+	    <action path="/atm/change-pin"
+	            type="com.demo.action.atm.ChangePinAction">
+	        <forward name="next" path="/WEB-INF/jsp/atm/change-pin.jsp" redirect="true"/>
+	    </action>
+	    
+	    <action path="/atm/deposit"
+	            type="com.demo.action.atm.DepositAction">
+	        <forward name="next" path="/WEB-INF/jsp/atm/deposit.jsp" redirect="true"/>
+	    </action>
+	    
+	    <action path="/atm/withdraw"
+	            type="com.demo.action.atm.WithdrawAction">
+	        <forward name="next" path="/WEB-INF/jsp/atm/withdraw.jsp" redirect="true"/>
+	    </action>
+	    
+	    <action path="/atm/transfer"
+	            type="com.demo.action.atm.TransferAction">
+	        <forward name="next" path="/WEB-INF/jsp/atm/transfer.jsp" redirect="true"/>
+	    </action>
+	    
+	    <action path="/atm/success"
+	            type="com.demo.action.atm.SuccessAction">
+	        <forward name="next" path="/WEB-INF/jsp/atm/success.jsp" redirect="true"/>
+	    </action>
+	    
+	    
+     
+        <!-- ADMIN flow -->
+        <action path="/admin/user/index"          type="com.demo.action.admin.UserIndexAction"/>
+        <action path="/admin/user/create"         type="com.demo.action.admin.UserCreateAction"/>
+        <action path="/admin/user/update"         type="com.demo.action.admin.UserUpdateAction"/>
+        <action path="/admin/user/reset-password" type="com.demo.action.admin.UserResetPasswordAction"/>
+        <action path="/admin/card/index"          type="com.demo.action.admin.CardIndexAction"/>
+        <action path="/admin/card/create"         type="com.demo.action.admin.CardCreateAction"/>
+        <action path="/admin/card/reset-pin"      type="com.demo.action.admin.CardResetPinAction"/>
+        <action path="/admin/reports"             type="com.demo.action.admin.ReportsAction"/>
+        <action path="/admin/report/by-user"      type="com.demo.action.admin.ReportByUserAction"/>
+        <action path="/admin/report/by-card"      type="com.demo.action.admin.ReportByCardAction"/>
+		    
+		    
+		    
+    </action-mappings>
+  
+    
+</struts-config>
+
