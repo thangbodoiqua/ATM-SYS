@@ -7,6 +7,27 @@
 
     <display-name>Struts 1 Demo</display-name>
 
+    <!-- ============================================== -->
+    <!-- Authentication Filter Configuration           -->
+    <!-- Protects /atm/* and /admin/* paths            -->
+    <!-- ============================================== -->
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>com.demo.security.AuthenticationFilter</filter-class>
+    </filter>
+
+    <!-- Filter mapping for ATM operations (require login) -->
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/atm/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Filter mapping for Admin operations (require login) -->
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+
    <servlet>
 	<servlet-name>action</servlet-name>
 		<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>

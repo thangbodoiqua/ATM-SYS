@@ -7,6 +7,9 @@
     <form-beans>       	
 		<form-bean name="enterCardForm" type="com.demo.form.atm.EnterCardForm"/>
 		<form-bean name="enterPinForm"  type="com.demo.form.atm.EnterPinForm"/>
+		
+		<!-- Login form bean for user authentication -->
+		<form-bean name="loginForm" type="com.demo.form.auth.LoginForm"/>
 	        	
     </form-beans>
 
@@ -24,7 +27,7 @@
 		    <action path="/ping" forward="/test.jsp"/>
 		    
 	 <!--  -->
-		    
+		    	
 		    
 		<!-- home -->
 		<action path="/home" type="com.demo.action.HomeAction">
@@ -48,6 +51,25 @@
 	            scope="request"
 	            input="/WEB-INF/jsp/auth/enter-pin.jsp">
 	        <forward name="next" path="/atm/transaction.do" redirect="true"/>
+	    </action>
+
+	    <!-- Login Action -->
+	    <!-- Handles user authentication: GET shows login form, POST processes login -->
+	    <action path="/auth/login"
+	            type="com.demo.action.auth.LoginAction"
+	            name="loginForm"
+	            scope="request"
+	            input="/WEB-INF/jsp/auth/login.jsp">
+	        <forward name="showLogin" path="/WEB-INF/jsp/auth/login.jsp"/>
+	        <forward name="success" path="/home.do" redirect="true"/>
+	        <forward name="home" path="/home.do" redirect="true"/>
+	    </action>
+
+	    <!-- Logout Action -->
+	    <!-- Invalidates session and redirects to login page -->
+	    <action path="/auth/logout"
+	            type="com.demo.action.auth.LogoutAction">
+	        <forward name="login" path="/auth/login.do" redirect="true"/>
 	    </action>
 
 

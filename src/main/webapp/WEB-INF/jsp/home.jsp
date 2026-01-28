@@ -107,7 +107,7 @@
 
             <div class="row" style="margin-top:16px">
                 <a class="btn" style="background:#1f2937;color:#e5e7eb;border:1px solid rgba(255,255,255,.12)"
-                   href="<%=ctx%>/logout.do">LOG OUT</a>               
+                   href="<%=ctx%>/auth/logout.do">LOG OUT</a>               
             </div>
         </section>
     <% } %>
