@@ -1,34 +1,20 @@
-package com.demo.dto;
+package com.demo.form.admin.user;
 
-import java.sql.Date;
 
-public class UserDTO {
-	private Long userId;
+import org.apache.struts.action.*;
+
+public class CreateUserForm extends ActionForm{
+
 	private String username;
 	private String password;
 	private String email;
 	private String phone;
 	private String address;
 	private String gender;
-	private Date dob;
-	private String salt;
-	private String role;
+	private String dob;
 
-	
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public CreateUserForm() {
+		super();
 	}
 
 	public String getUsername() {
@@ -79,20 +65,13 @@ public class UserDTO {
 		this.gender = gender;
 	}
 
-	public Date getDob() {
+	public String getDob() {
 		return dob;
 	}
 
-	public void setDob(Date dob) {
+	public void setDob(String dob) {
 		this.dob = dob;
 	}
 
-	public String getSalt() {
-		return salt;
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
 
 }

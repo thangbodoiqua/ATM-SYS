@@ -1,6 +1,7 @@
 package com.demo.dao;
 
 import java.util.List;
+
 import java.sql.Date;
 import com.demo.dto.TransactionDTO;
 
@@ -11,5 +12,8 @@ public interface TransactionDAO {
 
 	TransactionDTO findByAtmId(Long atmId);
 
-	List<TransactionDTO> findIn(Date from, Date to, TransactionDTO trans);
+	List<TransactionDTO> findInRange(Date from, Date to, TransactionDTO trans);
+	
+	boolean create(TransactionDTO trans);
+	
 }

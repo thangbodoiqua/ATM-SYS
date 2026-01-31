@@ -46,7 +46,26 @@ public class CardDAOImpl implements CardDAO {
 		}
 		return null;
 	}
+	@Override
+	public CardDTO findByUserIdAndCardNumber(Long userId, String cardNumber) {
+		String sql = String.format("SELECT * FROM %s WHERE USER_ID = ? AND CARD_NUMBER = ?", cardTable);
 
+		try (Connection con = DBUtil.getConnection()) {
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setLong(1, userId);
+			ps.setString(2, cardNumber);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return mapRow(rs);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	@Override
 	public List<CardDTO> findCardsByUserId(Long userId) {
 		String sql = String.format("SELECT * FROM %s WHERE USER_ID = ?", cardTable);
@@ -54,7 +73,7 @@ public class CardDAOImpl implements CardDAO {
 
 		try (Connection con = DBUtil.getConnection()) {
 			PreparedStatement ps = con.prepareStatement(sql);
-
+			ps.setLong(1, userId);
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
@@ -63,7 +82,7 @@ public class CardDAOImpl implements CardDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return list;
 	}
 
 	@Override
@@ -88,7 +107,7 @@ public class CardDAOImpl implements CardDAO {
 	@Override
 	public boolean create(CardDTO card) {
 		String sql = String.format("""
-				    INSERT INTO THANG_ATM_SYS_CARD
+				    INSERT INTO %s
 				    (USER_ID, CARD_NUMBER, PIN_CODE, CARD_STATUS, EXPIRED_DATE, BALANCE, CARD_TYPE)
 				    VALUES (?, ?, ?, ?, ?, ?, ?)
 				""", cardTable);
@@ -113,8 +132,11 @@ public class CardDAOImpl implements CardDAO {
 
 	@Override
 	public boolean update(CardDTO card) {
-		String sql = String.format("UPDATE %s" + " SET PIN_CODE= ?," + " CARD_STATUS = ?," + " EXPIRED_DATE = ?,"
-				+ " CARD_TYPE =?," + " BALANCE =?," + " WHERE CARD_ID = ?", cardTable);
+
+	String sql = String.format(
+	        "UPDATE %s SET PIN_CODE = ?, CARD_STATUS = ?, EXPIRED_DATE = ?, CARD_TYPE = ?, BALANCE = ? " +
+	        "WHERE CARD_ID = ?", cardTable);
+
 		try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
 			ps.setString(1, card.getPinCode());
@@ -122,6 +144,7 @@ public class CardDAOImpl implements CardDAO {
 			ps.setDate(3, card.getExpiredDate());
 			ps.setString(4, card.getCardType());
 			ps.setBigDecimal(5, card.getBalance());
+			ps.setLong(6, card.getCardId());
 
 			return ps.executeUpdate() > 0;
 
@@ -150,5 +173,7 @@ public class CardDAOImpl implements CardDAO {
 		}
 		return list;
 	}
+
+	
 
 }

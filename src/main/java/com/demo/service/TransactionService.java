@@ -1,5 +1,7 @@
 package com.demo.service;
 
-public interface TransactionService {
+import com.demo.dto.TransactionDTO;
 
+public interface TransactionService {
+	boolean create(TransactionDTO trans);
 }

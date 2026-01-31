@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface CardDAO {
 	CardDTO findByCardNumber(String cardNumber);
+	
+	CardDTO findByUserIdAndCardNumber(Long userId, String cardNumber);
 
 	List<CardDTO> findCardsByUserId(Long userId);
 
@@ -16,5 +18,5 @@ public interface CardDAO {
 	boolean update(CardDTO card);
 
 	List<CardDTO> findAll();
-
+	
 }

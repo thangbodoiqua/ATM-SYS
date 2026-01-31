@@ -1,64 +1,35 @@
 package com.demo.action.auth;
+import javax.servlet.http.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
+import org.apache.struts.action.*;
 
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import com.demo.constant.Constants;
 
-/**
- * LogoutAction - Handles user logout
- * 
- * Flow:
- * 1. Invalidate current session (destroys all session data)
- * 2. Redirect to login page with success message
- * 
- * URL mapping: /auth/logout.do
- * 
- * Security considerations:
- * - Always invalidate session on logout to prevent session hijacking
- * - Clear any cached user data
- * - Redirect to login page (not home) to prevent access to protected resources
- */
-public class LogoutAction extends Action {
+public class LogoutAction extends Action{
+	private static final Logger log = Logger.getLogger(LogoutAction.class);
 
-    @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form,
-                                 HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-
-        // ========================
-        // Session Invalidation
-        // ========================
-
-        // Get current session (don't create if doesn't exist)
-        HttpSession session = request.getSession(false);
-
-        if (session != null) {
-            // Log username before invalidating (for logging purposes)
-            String username = (String) session.getAttribute(LoginAction.SESSION_USERNAME);
-            if (username != null) {
-                System.out.println("User logged out: " + username);
-            }
-
-            // Invalidate session - this removes ALL session attributes
-            // and marks the session as invalid
+	@Override
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		HttpSession session = request.getSession(false);
+		
+		if (session != null) {
+			String username = (String) session.getAttribute(Constants.AUTH_USERNAME);
+			String sessionId = session.getId();
+			
+			log.info("[LogoutAction] User logout: " + (username != null ? username : "unknown") + " | Session ID: " + sessionId);
+			
             session.invalidate();
+            
+            log.debug("[LogoutAction] Session invalidated successfully");
+        } else {
+        	log.debug("[LogoutAction] Logout attempted but no active session found");
         }
-
-        // ========================
-        // Redirect to Login Page
-        // ========================
-
-        // Set logout success message (will be displayed on login page)
-        // Note: Since session is invalidated, we use request attribute
-        // and redirect to a page that can display it
+        
         request.setAttribute("message", "You have been logged out successfully");
 
-        // Redirect to login page
-        return mapping.findForward("login");
-    }
+		return mapping.findForward("login");
+	}
 }

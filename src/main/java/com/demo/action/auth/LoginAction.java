@@ -1,139 +1,67 @@
 package com.demo.action.auth;
+import javax.servlet.http.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
+import org.apache.struts.action.*;
 
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-
-import com.demo.dao.UserDAO;
-import com.demo.dao.impl.UserDAOImpl;
+import com.demo.constant.Constants;
 import com.demo.dto.UserDTO;
-import com.demo.form.auth.LoginForm;
-import com.demo.util.PasswordUtil;
+import com.demo.form.auth.*;
+import com.demo.service.impl.UserServiceImpl;
+import com.demo.service.UserService;
 
-/**
- * LoginAction - Handles user authentication
- * 
- * Flow:
- * 1. GET request -> Display login form
- * 2. POST request -> Validate credentials
- *    - If valid: Create session with user info, redirect to home
- *    - If invalid: Show error message, return to login form
- * 
- * Session attributes set on successful login:
- * - LOGGED_IN_USER: UserDTO object of the logged-in user
- * - USER_ID: The user's ID
- * - USERNAME: The user's username
- * 
- * URL mapping: /auth/login.do
- */
-public class LoginAction extends Action {
-
-    // Session attribute keys
-    public static final String SESSION_USER = "LOGGED_IN_USER";
-    public static final String SESSION_USER_ID = "USER_ID";
-    public static final String SESSION_USERNAME = "USERNAME";
-
-    // Data Access Object for user operations
-    private UserDAO userDAO = new UserDAOImpl();
-
-    @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form,
-                                 HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-
-        // Check if this is a GET request (show login form)
-        if ("GET".equalsIgnoreCase(request.getMethod())) {
-            // Check if user is already logged in
-            HttpSession session = request.getSession(false);
-            if (session != null && session.getAttribute(SESSION_USER) != null) {
-                // User already logged in, redirect to home
-                return mapping.findForward("home");
-            }
-            // Show login form
-            return mapping.findForward("showLogin");
-        }
-
-        // POST request - process login
-        LoginForm loginForm = (LoginForm) form;
-        String username = loginForm.getUsername();
-        String password = loginForm.getPassword();
-
-        // ========================
-        // Validation
-        // ========================
-
-        // Check if username is empty
-        if (username == null || username.trim().isEmpty()) {
-            request.setAttribute("error", "Username is required");
-            return mapping.getInputForward();
-        }
-
-        // Check if password is empty
-        if (password == null || password.trim().isEmpty()) {
-            request.setAttribute("error", "Password is required");
-            return mapping.getInputForward();
-        }
-
-        // Trim username
-        username = username.trim();
-
-        // ========================
-        // Authentication
-        // ========================
-
-        // Find user by username
-        UserDTO user = new UserDTO();
-        
-        		/*userDAO.findByUsername(username);*/
-
-        // Check if user exists
-        if (user == null) {
-            request.setAttribute("error", "Invalid username or password");
-            return mapping.getInputForward();
-        }
-
-        // Verify password using stored hash and salt
-        boolean isPasswordValid = true; 
-		/*
-		 * PasswordUtil.verifyPassword( password, user.getPassword(), // stored hash
-		 * user.getSalt() // stored salt );
-		 */
-        if (!isPasswordValid) {
-            request.setAttribute("error", "Invalid username or password");
-            return mapping.getInputForward();
-        }
-
-        // ========================
-        // Create Session
-        // ========================
-
-        // Invalidate any existing session to prevent session fixation
-        HttpSession oldSession = request.getSession(false);
+public class LoginAction extends Action{
+	private static final Logger log = Logger.getLogger(LoginAction.class);
+	private UserService userService = new UserServiceImpl();
+	
+	@Override
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		if("GET".equalsIgnoreCase(request.getMethod())) {
+			HttpSession existSession = request.getSession(false);
+			if(existSession != null && (
+					existSession.getAttribute(Constants.AUTH_USER_ID) != null ||
+					existSession.getAttribute(Constants.AUTH_USERNAME) != null)) {
+				log.debug("[LoginAction] User already logged in, redirecting to home");
+				return mapping.findForward("home");
+			}
+			log.debug("[LoginAction] Displaying login page");
+			return mapping.findForward("login");
+		}
+		
+		LoginForm f = (LoginForm) form;
+		String username = f.getUsername();
+		String password = f.getPassword();
+		
+		log.info("[LoginAction] Login attempt for username: " + username);
+		
+		UserDTO user = userService.login(username, password);
+		
+		if(user == null) {
+			log.warn("[LoginAction] Login failed for username: " + username + " - Invalid credentials");
+			request.setAttribute("error", "username or password is incorrect");
+			return mapping.getInputForward();
+		}
+		
+		HttpSession oldSession = request.getSession(false);
+		
         if (oldSession != null) {
+        	log.debug("[LoginAction] Invalidating old session for user: " + username);
             oldSession.invalidate();
         }
+        
+		HttpSession newSession =  request.getSession(true);
 
-        // Create new session
-        HttpSession newSession = request.getSession(true);
-
-        // Store user information in session
-        // Clear sensitive data before storing
-        user.setPassword(null);
-        user.setSalt(null);
-
-        newSession.setAttribute(SESSION_USER, user);
-        newSession.setAttribute(SESSION_USER_ID, user.getUserId());
-        newSession.setAttribute(SESSION_USERNAME, user.getUsername());
-
-        // Set session timeout (30 minutes)
+		newSession.setAttribute(Constants.AUTH_USER_ID, user.getUserId());
+		newSession.setAttribute(Constants.AUTH_USERNAME, user.getUsername());
+		newSession.setAttribute(Constants.AUTH_ROLE, user.getRole());
+		
+		log.info("[LoginAction] Login successful for user: " + username + " | Role: " + user.getRole() + " | Session ID: " + newSession.getId());
+		
         newSession.setMaxInactiveInterval(30 * 60);
+		return mapping.findForward("home");
+	}
 
-        // Redirect to home page after successful login
-        return mapping.findForward("success");
-    }
+	
 }

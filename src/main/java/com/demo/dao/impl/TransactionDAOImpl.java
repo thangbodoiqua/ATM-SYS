@@ -82,8 +82,39 @@ public class TransactionDAOImpl implements TransactionDAO {
 	}
 
 	@Override
-	public List<TransactionDTO> findIn(Date from, Date to, TransactionDTO trans) {
-
+	public List<TransactionDTO> findInRange(Date from, Date to, TransactionDTO trans) {
 		return null;
 	}
+
+	@Override
+	public boolean create(TransactionDTO trans) {
+		String sql;
+		if(trans.getRefTransId() != null) {
+			sql = String.format("INSERT INTO %s "
+					+ "(CARD_ID, TRANS_TYPE, TRANS_AMOUNT, REF_TRANS_ID) "
+					+ "VALUES (?, ?, ?, ?)", transTable);
+		} else {
+			sql = String.format("INSERT INTO %s "
+					+ "(CARD_ID, TRANS_TYPE, TRANS_AMOUNT) "
+					+ "VALUES (?, ?, ?)", transTable);
+		}
+		
+		try (Connection con = DBUtil.getConnection()) {
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setLong(1, trans.getCardId());
+			ps.setString(2, trans.getTransType());
+			ps.setBigDecimal(3, trans.getTransAmount());
+			
+			if(trans.getRefTransId() != null) {
+				ps.setLong(4, trans.getRefTransId());
+			}
+			
+			return ps.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+		
+		}
 }

@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts.action.*;
 
-public class WithdrawAction extends Action {
+public class SuccessTransactionAction extends Action{
 
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
@@ -14,5 +14,4 @@ public class WithdrawAction extends Action {
 	}
 
 	
-
 }
