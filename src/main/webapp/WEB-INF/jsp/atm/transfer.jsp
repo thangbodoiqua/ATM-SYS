@@ -1,43 +1,60 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-
-<%
-    String ctx = request.getContextPath();
-    String error = (String) request.getAttribute("error");
-%>
-
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Transfer</title>
+
+  <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/input.css">
+
 </head>
 <body>
 
-<h2>Transfer</h2>
+		<jsp:include page="/WEB-INF/jsp/header.jsp" flush="true" />
+	
+<div class="page-container">
+    <div class="form-card">
 
-	<% if (error != null) { %>
-	    <p style="color:red;"><%= error %></p>
-	<% } %>
+      <div class="page-header">
+        <html:link page="/atm/menu.do" styleClass="back-link">← Back to menu</html:link>
+        <h2 class="page-title">Transfer</h2>
+      </div>
 
-<html:form action="/atm/transfer" method="POST">
+      <html:messages id="msg" message="true">
+        <p class="success-text"><bean:write name="msg"/></p>
+      </html:messages>
+      <div class="global-errors">
+        <html:errors property="error"/>
+      </div>
 
-    <p>
-        Receiver Card Number:<br>
-        <html:text property="receiverCardNumber" />
-    </p>
+      <html:form action="/atm/transfer" method="POST">
+        <div class="field">
+          <div class="field-head">
+            <label>Receiver card number</label>
+            <span class="inline-errors"><html:errors property="receiverCardNumber"/></span>
+          </div>
+          <html:text property="receiverCardNumber" maxlength="16"/>
+        </div>
 
-    <p>
-        Amount:<br>
-        <html:text property="amount" />
-    </p>
+        <div class="field">
+          <div class="field-head">
+            <label>Amount</label>
+            <span class="inline-errors"><html:errors property="amount"/></span>
+          </div>
+          <html:text property="amount"/>
+        </div>
 
-    <p>
-        <html:submit value="Confirm" />
-    </p>
+        <div class="actions">
+          <span class="spacer"></span>
+          <button type="submit" class="btn">Confirm</button>
+        </div>
+      </html:form>
 
-</html:form>
+    </div>
+  </div>
 
 </body>
 </html>

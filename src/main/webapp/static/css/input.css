@@ -1,0 +1,146 @@
+@charset "UTF-8";
+
+*{box-sizing:border-box}
+
+/* NỀN đặt trên html để luôn phủ toàn trang (cao tới đâu phủ tới đó) */
+html{
+  min-height:100%;
+  background:linear-gradient(135deg,#eef2f7 0%,#d6e4ff 100%);
+}
+
+/* body KHÔNG dùng flex, KHÔNG đặt height cố định */
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  color:#111827;
+  background:transparent;
+}
+
+/* Container: canh giữa ngang bằng margin, có khoảng trắng trên và hai bên */
+.page-container{
+  width:100%;
+  max-width:560px;
+  margin:64px auto 24px;
+  padding:0 16px; /* chừa khoảng trắng 2 bên khi màn hình hẹp */
+}
+
+.form-card{
+  background:#fff;
+  border-radius:12px;
+  padding:22px 24px 24px;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.page-header{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:16px
+}
+.back-link{
+  position:absolute;
+  left:0; top:0;
+  color:#2563eb;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:4px 0
+}
+.back-link:hover{color:#1d4ed8}
+.page-title{
+  margin:0;
+  font-size:20px;
+  font-weight:700;
+  text-align:center
+}
+
+/* form + field */
+.form-card form{margin-top:8px}
+.form-card form > .field{margin-bottom:12px}
+
+.field-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.field-head label{
+  display:inline-block;
+  font-size:13px;
+  color:#374151;
+  margin:0;
+}
+
+/* lỗi hiển thị dạng span cạnh label */
+.inline-errors{
+  display:inline-block;
+  color:#dc2626;
+  font-size:12px;
+  line-height:1.2;
+  margin-left:16px;
+  white-space:nowrap;
+  vertical-align:middle;
+}
+.inline-errors:empty{display:none}
+
+
+/* input/select/date */
+.form-card input[type="text"],
+.form-card input[type="password"],
+.form-card input[type="date"],
+.form-card select{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid #e5e7eb;
+  border-radius:8px;
+  font-size:14px;
+  outline:none;
+  background:#fff;
+  transition:border-color .15s, box-shadow .15s
+}
+.form-card input[type="text"]:focus,
+.form-card input[type="password"]:focus,
+.form-card input[type="date"]:focus,
+.form-card select:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px rgba(37,99,235,.12)
+}
+
+/* radio group */
+.form-card .radio-group{display:flex;gap:16px;flex-wrap:wrap}
+.form-card .radio-group label{display:inline-flex;align-items:center;gap:8px;margin:0}
+
+/* messages */
+.form-card .success-text{color:#16a34a;font-size:13px; margin-top: 3px; margin-bottom: 3px;}
+.form-card .global-errors { color:#dc2626;font-size:13px;margin-top: 3px; margin-bottom: 3px;}
+.form-card .global-errors {margin:2px 0}
+
+/* buttons */
+.btn{
+  appearance:none;
+  border:0;
+  border-radius:8px;
+  padding:10px 16px;
+  background:#2563eb;
+  color:#fff;
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px
+}
+.btn:hover{background:#1d4ed8}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+
+.actions{margin-top:8px;display:flex;gap:10px}
+.actions .spacer{flex:1}
+
+@media (max-width:480px){
+  .page-container{margin:48px auto 16px;padding:0 12px}
+  .form-card{padding:16px}
+  .page-title{font-size:18px}
+}

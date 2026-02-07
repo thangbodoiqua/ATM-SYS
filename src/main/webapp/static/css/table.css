@@ -1,0 +1,315 @@
+@charset "UTF-8";
+
+* {
+	box-sizing: border-box
+}
+
+html {
+	min-height: 100%;
+	background: linear-gradient(135deg, #eef2f7 0%, #d6e4ff 100%);
+}
+
+body {
+	margin: 0;
+	font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+	color: #111827;
+	background: transparent;
+}
+
+.page-container {
+	width: 100%;
+	max-width: 1280px;
+	margin: 10px auto 6px;
+	padding: 0 16px;
+}
+
+.form-card {
+	background: #fff;
+	border-radius: 12px;
+	padding: 22px 24px 24px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+}
+
+.page-header {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 16px
+}
+
+.back-link {
+	position: absolute;
+	left: 0;
+	top: 0;
+	color: #2563eb;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 4px 0
+}
+
+.back-link:hover {
+	color: #1d4ed8
+}
+
+.page-title {
+	margin: 0;
+	font-size: 20px;
+	font-weight: 700;
+	text-align: center
+}
+
+.form-card form {
+	margin-top: 8px
+}
+
+.form-card form>.field {
+	margin-bottom: 12px
+}
+
+.field-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.field-head label {
+	display: inline-block;
+	font-size: 13px;
+	color: #374151;
+	margin: 0;
+}
+
+.inline-errors {
+	display: inline-block;
+	color: #dc2626;
+	font-size: 12px;
+	line-height: 1.2;
+	margin-left: 16px;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+
+.inline-errors:empty {
+	display: none
+}
+
+.form-card input[type="text"],
+.form-card input[type="password"],
+.form-card input[type="date"],
+.form-card select {
+	width: 100%;
+	padding: 10px 12px;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	font-size: 14px;
+	outline: none;
+	background: #fff;
+	transition: border-color .15s, box-shadow .15s
+}
+
+.form-card input[type="text"]:focus,
+.form-card input[type="password"]:focus,
+.form-card input[type="date"]:focus,
+.form-card select:focus {
+	border-color: #2563eb;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, .12)
+}
+
+.form-card .radio-group {
+	display: flex;
+	gap: 16px;
+	flex-wrap: wrap
+}
+
+.form-card .radio-group label {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0
+}
+
+.form-card .success-text {
+	color: #16a34a;
+	font-size: 13px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+.form-card .global-errors {
+	color: #dc2626;
+	font-size: 13px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+.form-card .global-errors {
+	margin: 2px 0
+}
+
+.btn {
+	appearance: none;
+	border: 0;
+	border-radius: 8px;
+	padding: 10px 16px;
+	background: #2563eb;
+	color: #fff;
+	font-weight: 600;
+	font-size: 14px;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px
+}
+
+.btn:hover {
+	background: #1d4ed8
+}
+
+.btn:disabled {
+	opacity: .6;
+	cursor: not-allowed
+}
+
+.actions {
+	margin-top: 8px;
+	display: flex;
+	gap: 10px
+}
+
+.actions .spacer {
+	flex: 1
+}
+
+/* ====== BẢNG ====== */
+.table-wrap {
+	width: 100%;
+	overflow-x: auto;
+}
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: auto;
+	background: transparent;
+}
+
+.table th,
+.table td {
+	padding: 10px 12px;
+	border-bottom: 1px solid #e5e7eb;
+	text-align: left;
+	font-size: 14px;
+	color: #111827;
+	vertical-align: middle;
+}
+
+.table th {
+	background: #f9fafb;
+	color: #374151;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.table tr:hover {
+	background: #f3f4f6
+}
+
+.table .amount {
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+}
+
+.table .type {
+	font-weight: 600;
+	text-transform: capitalize;
+	color: #1f2937;
+}
+
+.table .time {
+	white-space: nowrap
+}
+
+.table-empty {
+	text-align: center;
+	color: #6b7280;
+	padding: 12px 0;
+}
+
+/* Filter trên bảng */
+
+
+.table-filters {
+	display: flex;
+	gap: 12px;
+	align-items: flex-end;
+	flex-wrap: nowrap;
+	/* không cho xuống dòng trên màn đủ rộng */
+	margin-bottom: 12px;
+}
+
+/* Hai field co giãn để chừa chỗ cho nút */
+.table-filters .field {
+	flex: 1 1 0;
+	/* chia đều, có thể co lại */
+	min-width: 0;
+	/* cho phép co nhỏ hơn intrinsic width */
+}
+
+.table-filters label {
+	display: inline-block;
+	font-size: 13px;
+	color: #374151;
+	margin-bottom: 6px;
+}
+
+/* Input date full chiều ngang của field (field sẽ co giãn) */
+.table-filters input[type="date"] {
+	width: 100%;
+}
+
+/* Nút SEARCH giữ kích thước tự nhiên, dạt phải và bám đáy */
+.table-filters .search-btn {
+	flex: 0 0 auto;
+	/* không giãn */
+	margin-left: auto;
+	/* đẩy sát phải hàng */
+	align-self: flex-end;
+	white-space: nowrap;
+	height: 40px;
+	line-height: 1;
+	padding: 10px 16px;
+}
+
+
+@media (max-width:560px) {
+	.page-container {
+		margin: 48px auto 16px;
+		padding: 0 12px
+	}
+
+	.form-card {
+		padding: 16px
+	}
+
+	.page-title {
+		font-size: 18px
+	}
+
+	.table-filters {
+		flex-wrap: wrap
+	}
+
+	.table-filters .search-btn {
+		margin-left: 0
+	}
+
+	.table th,
+	.table td {
+		padding: 8px 10px
+	}
+}

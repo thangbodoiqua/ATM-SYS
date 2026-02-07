@@ -1,116 +1,101 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
-<%
-    String userIdVal     = (String) request.getAttribute("userId");
-    String cardNumberVal = (String) request.getAttribute("cardNumber");
-    String pinVal        = (String) request.getAttribute("pinCode");
-    String cardTypeVal   = (String) request.getAttribute("cardType");
-    String cardStatusVal = (String) request.getAttribute("cardStatus");
-    String expiredVal    = (String) request.getAttribute("expiredDate");
-    String balanceVal    = (String) request.getAttribute("balance");
-
-    String message = (String) request.getAttribute("message");
-    String error   = (String) request.getAttribute("error");
-
-    String errUserId      = (String) request.getAttribute("err_userId");
-    String errCardNumber  = (String) request.getAttribute("err_cardNumber");
-    String errPin         = (String) request.getAttribute("err_pin");
-    String errType        = (String) request.getAttribute("err_cardType");
-    String errStatus      = (String) request.getAttribute("err_cardStatus");
-    String errExpired     = (String) request.getAttribute("err_expiredDate");
-    String errBalance     = (String) request.getAttribute("err_balance");
-%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Create Card</title>
+<meta charset="UTF-8">
+
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/static/css/input.css">
+
+<title>Create Card</title>
 </head>
 <body>
 
-<h2>Create Card</h2>
+	<jsp:include page="/WEB-INF/jsp/header.jsp" flush="true" />
 
-<% if (message != null) { %>
-    <p style="color: green;"><%= message %></p>
-<% } %>
+	<div class="page-container">
+		<div class="form-card">
 
-<% if (error != null) { %>
-    <p style="color: red;"><%= error %></p>
-<% } %>
+			<div class="page-header">
+				<html:link page="/admin.do" styleClass="back-link">← Back to dashboard</html:link>
+				<h2 class="page-title">Create Card</h2>
+			</div>
 
-<form action="create.do" method="post">
+			<html:messages id="msg" message="true">
+				<p class="success-text">
+					<bean:write name="msg" />
+				</p>
+			</html:messages>
+			<div class="global-errors">
+				<html:errors property="error" />
+			</div>
 
-    <p>
-        User ID:<br>
-        <input type="text" name="userId" value="<%= userIdVal != null ? userIdVal : "" %>">
-        <% if (errUserId != null) { %>
-            <span style="color:red;"><%= errUserId %></span>
-        <% } %>
-    </p>
+			<html:form action="/admin/card/create" method="post">
 
-    <p>
-        Card Number (16 digits):<br>
-        <input type="text" name="cardNumber" maxlength="16"
-               value="<%= cardNumberVal != null ? cardNumberVal : "" %>">
-        <% if (errCardNumber != null) { %>
-            <span style="color:red;"><%= errCardNumber %></span>
-        <% } %>
-    </p>
+				<div class="field">
+					<div class="field-head">
+						<label>Username</label> <span class="inline-errors"><html:errors
+								property="user" /></span>
+					</div>
+					<html:text property="username" />
+				</div>
 
-    <p>
-        PIN (4 digits):<br>
-        <input type="text" name="pinCode" maxlength="4"
-               value="<%= pinVal != null ? pinVal : "" %>">
-        <% if (errPin != null) { %>
-            <span style="color:red;"><%= errPin %></span>
-        <% } %>
-    </p>
+				<div class="field">
+					<div class="field-head">
+						<label>Card Number (16 digits):</label> <span
+							class="inline-errors"><html:errors property="cardNumber" /></span>
+					</div>
+					<html:text property="cardNumber" maxlength="16" />
+				</div>
 
-    <p>
-        Card Type:<br>
-        <select name="cardType">
-            <option value="">-- Select --</option>
-            <option value="DEBIT"  <%= "DEBIT".equalsIgnoreCase(cardTypeVal) ? "selected" : "" %>>DEBIT</option>
-            <option value="CREDIT" <%= "CREDIT".equalsIgnoreCase(cardTypeVal) ? "selected" : "" %>>CREDIT</option>
-        </select>
-        <% if (errType != null) { %>
-            <span style="color:red;"><%= errType %></span>
-        <% } %>
-    </p>
+				<div class="field">
+					<div class="field-head">
+						<label>PIN (4 digits):</label> <span class="inline-errors"><html:errors
+								property="pinCode" /></span>
+					</div>
+					<html:text property="pinCode" maxlength="4" />
+				</div>
 
-    <p>
-        Card Status:<br>
-        <select name="cardStatus">
-            <option value="">-- Select --</option>
-            <option value="ACTIVE"  <%= "ACTIVE".equalsIgnoreCase(cardStatusVal) ? "selected" : "" %>>ACTIVE</option>
-            <option value="BLOCKED"  <%= "BLOCKED".equalsIgnoreCase(cardStatusVal) ? "selected" : "" %>>BLOCKED</option>
-            <option value="EXPIRED" <%= "EXPIRED".equalsIgnoreCase(cardStatusVal) ? "selected" : "" %>>EXPIRED</option>
-        </select>
-        <% if (errStatus != null) { %>
-            <span style="color:red;"><%= errStatus %></span>
-        <% } %>
-    </p>
+				<div class="field">
+					<div class="field-head">
+						<label>Card Type:</label> <span class="inline-errors"><html:errors
+								property="cardType" /></span>
+					</div>
+					<html:select property="cardType">
+						<html:option value="">-- Select --</html:option>
+						<html:option value="DEBIT">DEBIT</html:option>
+						<html:option value="CREDIT">CREDIT</html:option>
+					</html:select>
+				</div>
 
-    <p>
-        Expired Date:<br>
-        <input type="date" name="expiredDate" value="<%= expiredVal != null ? expiredVal : "" %>">
-        <% if (errExpired != null) { %>
-            <span style="color:red;"><%= errExpired %></span>
-        <% } %>
-    </p>
+				<div class="field">
+					<div class="field-head">
+						<label>Expired Date:</label> <span class="inline-errors"><html:errors
+								property="expiredDate" /></span>
+					</div>
+					<input type="date" name="expiredDate" />
+				</div>
 
-    
-<p>
-        Balance: <br>
-        <input type="text" name="balance" value="<%= balanceVal != null ? balanceVal : "" %>">
-        <% if (errBalance != null) { %>
-            <span style="color:red;"><%= errBalance %></span>
-        <% } %>
-    </p>
+				<div class="field">
+					<div class="field-head">
+						<label>Balance:</label> <span class="inline-errors"><html:errors
+								property="balance" /></span>
+					</div>
+					<html:text property="balance" />
+				</div>
 
-    <p>
-        <button type="submit">Create</button>
-    </p>
+				<div class="actions">
+					<span class="spacer"></span>
+					<button type="submit" class="btn">Create</button>
+				</div>
 
-</form>
+			</html:form>
+
+		</div>
+	</div>
+</body>
+</html>

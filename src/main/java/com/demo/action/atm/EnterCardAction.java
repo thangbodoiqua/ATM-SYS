@@ -5,6 +5,7 @@ import javax.servlet.http.*;
 import org.apache.struts.action.*;
 
 import com.demo.constant.Constants;
+import com.demo.dto.CardDTO;
 import com.demo.form.atm.EnterCardForm;
 import com.demo.form.auth.*;
 import com.demo.service.CardService;
@@ -44,17 +45,26 @@ public class EnterCardAction extends Action {
             return mapping.getInputForward();
         }
         
+        CardDTO card = cardService.findByCardNumber(cardNumber);
         
         
-        boolean isValidCardNumber = cardService.validCardNumber(userId, cardNumber);
+        boolean isValidCard = card.getUserId().equals(userId);
         
-        
-        
-        if(!isValidCardNumber){
-        	request.setAttribute("error", "Card not exist");
+        if(!isValidCard || card == null){
+        	request.setAttribute("error", "Wrong card number");
         	return mapping.getInputForward();
         }
 
+        if(card.getCardStatus().equalsIgnoreCase(Constants.CARD_STATUS_EXPIRED)) {
+        	request.setAttribute("error", "Expired card");
+        	return mapping.getInputForward();
+        }
+        
+        if(card.getCardStatus().equalsIgnoreCase(Constants.CARD_STATUS_BLOCKED)) {
+        	request.setAttribute("error", "Card Blocked");
+        	return mapping.getInputForward();
+        }
+        
         session.setAttribute(Constants.ATM_CARD_NUMBER, cardNumber);   
         return mapping.findForward("enter-pin");
     }

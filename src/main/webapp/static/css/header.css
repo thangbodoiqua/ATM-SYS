@@ -1,0 +1,80 @@
+@charset "UTF-8";
+
+* { box-sizing: border-box; }
+
+.site-header{
+  position: sticky; /* bám trên cùng khi cuộn */
+  top: 0;
+  inset-inline: 0;
+  z-index: 1000;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.site-header-inner{
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand-link{
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 18px;
+}
+.brand-link:hover{ color:#1d4ed8; }
+
+.header-right{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.username{
+  color:#374151;
+  font-weight:600;
+}
+
+/* Nút trong header (độc lập, không ảnh hưởng .btn ở trang khác) */
+.site-header .btn{
+  appearance:none;
+  border:0;
+  border-radius:8px;
+  padding:6px 10px;
+  background:#2563eb;
+  color:#fff;
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  transition:background .15s ease, box-shadow .15s ease, transform .12s ease;
+}
+.site-header .btn:hover{ background:#1d4ed8; }
+.site-header .btn:active{ transform:translateY(0.5px); }
+
+.site-header .btn-ghost{
+  background:transparent;
+  color:#2563eb;
+  border:1px solid #d1d5db;
+}
+.site-header .btn-ghost:hover{
+  color:#1d4ed8;
+  border-color:#cbd5e1;
+  background:rgba(37,99,235,.05);
+}
+
+.site-header .btn-sm{ padding:5px 10px; font-size:13px; }
+
+/* Mobile */
+@media (max-width: 480px){
+  .site-header-inner{ padding:8px 12px; }
+  .brand-link{ font-size:16px; }
+}

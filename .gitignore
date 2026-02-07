@@ -1,40 +1,47 @@
-# === Java & Compiled files ===
 *.class
+*.os
+*.pyc
+
 *.log
+logs/
+temp/
+
+*.jar
 *.war
 *.ear
 *.zip
 *.tar.gz
+*.rar
 
-# Loại bỏ các file class được biên dịch vào thư mục build hoặc bin
-bin/
-build/
 dist/
-target/
+build/
+out/
 
-# === IDE Specific (Eclipse) ===
-.settings/
-.project
+.metadata
 .classpath
-.metadata/
-.recommenders/
-RemoteSystemsTempFiles/
-.externalToolBuilders/
+.project
+.settings/
 *.launch
+bin/
+.externalToolBuilders/
 
-# === IDE Specific (IntelliJ IDEA) ===
 .idea/
 *.iml
 *.iws
 *.ipr
 out/
+cmake-build-debug/
 
-# === Web Server (Tomcat) ===
-# Loại bỏ các file cấu hình server cục bộ của IDE
-Servers/
-.deployables/
-.wtpmodules/
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
-# === OS Specific ===
 .DS_Store
 Thumbs.db
+eh_desktop.ini
+$RECYCLE.BIN/
+
+# src/main/webapp/WEB-INF/lib/

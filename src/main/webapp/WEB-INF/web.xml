@@ -7,6 +7,22 @@
 
     <display-name>Struts 1 Demo</display-name>
 	
+	<error-page>
+	    <error-code>404</error-code>
+	    <location>/WEB-INF/jsp/error/404.jsp</location>
+	</error-page>
+	
+	<error-page>
+	    <error-code>403</error-code>
+	    <location>/WEB-INF/jsp/error/403.jsp</location>
+	</error-page>
+	
+	<error-page>
+	    <error-code>500</error-code>
+	    <location>/WEB-INF/jsp/error/500.jsp</location>
+	</error-page>
+		
+		
 	<filter>
 	    <filter-name>AuthFilter</filter-name>
 	    <filter-class>com.demo.security.AuthFilter</filter-class>
@@ -54,10 +70,5 @@
     <welcome-file-list>
         <welcome-file>test.do</welcome-file>
     </welcome-file-list> 
-
-    <!-- Listener to register the JDBC driver on application startup -->
-    <listener>
-        <listener-class>com.demo.listener.DriverRegistrationListener</listener-class>
-    </listener>
-
 </web-app>
+

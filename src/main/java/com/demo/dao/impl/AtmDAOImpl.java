@@ -43,7 +43,7 @@ public class AtmDAOImpl implements AtmDAO {
 	}
 
 	@Override
-	public boolean create(AtmDTO atm) {
+	public boolean save(AtmDTO atm) {
 		String sql = String.format("""
 				    INSERT INTO %s
 				    (LOCATION, ATM_STATUS, CASH_AVAILABLE)

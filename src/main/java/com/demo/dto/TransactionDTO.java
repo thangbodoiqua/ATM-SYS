@@ -11,6 +11,15 @@ public class TransactionDTO {
 	private BigDecimal transAmount;
 	private Timestamp transTime;
 	private Long refTransId;
+	private String refCardNumber = "";
+
+	public String getRefCardNumber() {
+		return refCardNumber;
+	}
+
+	public void setRefCardNumber(String refCardNumber) {
+		this.refCardNumber = refCardNumber;
+	}
 
 	public Long getTransId() {
 		return transId;

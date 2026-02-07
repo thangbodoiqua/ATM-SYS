@@ -46,45 +46,7 @@ public class CardDAOImpl implements CardDAO {
 		}
 		return null;
 	}
-	@Override
-	public CardDTO findByUserIdAndCardNumber(Long userId, String cardNumber) {
-		String sql = String.format("SELECT * FROM %s WHERE USER_ID = ? AND CARD_NUMBER = ?", cardTable);
-
-		try (Connection con = DBUtil.getConnection()) {
-			PreparedStatement ps = con.prepareStatement(sql);
-
-			ps.setLong(1, userId);
-			ps.setString(2, cardNumber);
-
-			try (ResultSet rs = ps.executeQuery()) {
-				if (rs.next()) {
-					return mapRow(rs);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	@Override
-	public List<CardDTO> findCardsByUserId(Long userId) {
-		String sql = String.format("SELECT * FROM %s WHERE USER_ID = ?", cardTable);
-		List<CardDTO> list = new ArrayList<CardDTO>();
-
-		try (Connection con = DBUtil.getConnection()) {
-			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setLong(1, userId);
-			ResultSet rs = ps.executeQuery();
-
-			while (rs.next()) {
-				list.add(mapRow(rs));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-
+	
 	@Override
 	public CardDTO findById(Long cardId) {
 		String sql = String.format("SELECT * FROM %s WHERE CARD_ID = ?", cardTable);
@@ -105,7 +67,7 @@ public class CardDAOImpl implements CardDAO {
 	}
 
 	@Override
-	public boolean create(CardDTO card) {
+	public boolean save(CardDTO card) {
 		String sql = String.format("""
 				    INSERT INTO %s
 				    (USER_ID, CARD_NUMBER, PIN_CODE, CARD_STATUS, EXPIRED_DATE, BALANCE, CARD_TYPE)
@@ -147,7 +109,6 @@ public class CardDAOImpl implements CardDAO {
 			ps.setLong(6, card.getCardId());
 
 			return ps.executeUpdate() > 0;
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -172,6 +133,24 @@ public class CardDAOImpl implements CardDAO {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	@Override
+	public boolean update(Connection con, CardDTO card) throws SQLException {
+		String sql = String.format(
+		        "UPDATE %s SET PIN_CODE = ?, CARD_STATUS = ?, EXPIRED_DATE = ?, CARD_TYPE = ?, BALANCE = ? " +
+		        "WHERE CARD_ID = ?", cardTable);
+
+			PreparedStatement ps = con.prepareStatement(sql);
+			
+			ps.setString(1, card.getPinCode());
+			ps.setString(2, card.getCardStatus());
+			ps.setDate(3, card.getExpiredDate());
+			ps.setString(4, card.getCardType());
+			ps.setBigDecimal(5, card.getBalance());
+			ps.setLong(6, card.getCardId());
+
+			return ps.executeUpdate() > 0;
 	}
 
 	

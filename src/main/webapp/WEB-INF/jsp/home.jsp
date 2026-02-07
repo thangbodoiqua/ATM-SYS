@@ -1,43 +1,45 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%
-    String ctx = request.getContextPath();
+String ctx = request.getContextPath();
 
-    String username = (String) session.getAttribute("AUTH_USERNAME");
-    String role     = (String) session.getAttribute("AUTH_ROLE");
-
-    boolean isAdmin = "ADMIN".equals(role); // tránh NPE bằng cách gọi equals trên hằng
-    if (username == null || username.trim().isEmpty()) {
-        username = "User";
-    }
+String role = (String) session.getAttribute("AUTH_ROLE");
+boolean isAdmin = "ADMIN".equals(role);
 %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
+<meta charset="UTF-8">
+<title>Home</title>
+
+<link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/option.css">
+
 </head>
 <body>
+	<jsp:include page="/WEB-INF/jsp/header.jsp" flush="true" />
+	<div class="page-container">
+		<div class="form-card">
+			<div class="page-header">
+				<h2 class="page-title">Home</h2>
+			</div>
 
-<h1>Welcome, <%= username %>!</h1>
+			<div class="menu-list">
+				<html:link page="/atm/enter-card.do" styleClass="btn btn-block">Enter ATM Card</html:link>
 
-<h2>Options</h2>
+				<%
+				if (isAdmin) {
+				%>
+				<html:link page="/admin.do" styleClass="btn btn-block">Admin Dashboard</html:link>
+				<%
+				}
+				%>
 
-<ul>
-    <!-- Always show Enter ATM Card -->
-    <li>
-        <a href="<%= ctx %>/atm/enter-card.do">Enter ATM Card</a>
-    </li>
+				<html:link page="/user/history.do" styleClass="btn btn-block">Transaction history</html:link>
+			</div>
 
-    <% if (isAdmin) { %>
-        <li>
-            <a href="<%= ctx %>/admin">Admin Dashboard</a>
-        </li>
-    <% } %>
-    
-    <li>
-        <a href="<%= ctx %>/auth/logout.do">Logout</a>
-    </li>
-</ul>
+		</div>
+	</div>
+
 
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.demo.action.atm;
 
 import javax.servlet.http.*;
 
+import org.apache.struts.Globals;
 import org.apache.struts.action.*;
 
 import com.demo.constant.Constants;
@@ -17,6 +18,11 @@ public class EnterPinAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		if("GET".equalsIgnoreCase(request.getMethod())) {
+			ActionMessages msgs = (ActionMessages) request.getSession().getAttribute(Globals.MESSAGE_KEY);
+		    if (msgs != null) {
+		        saveMessages(request, msgs);
+		        request.getSession().removeAttribute(Globals.MESSAGE_KEY);
+		    }
 			return mapping.findForward("enter-pin");
 		}
 		
@@ -40,7 +46,7 @@ public class EnterPinAction extends Action {
 		
 		HttpSession session = request.getSession(true);
         String cardNumber = (String) session.getAttribute(Constants.ATM_CARD_NUMBER);
-        boolean isValidPin = cardService.validPin(cardNumber, pin);
+        boolean isValidPin = cardService.verifyPin(cardNumber, pin);
 
         if(!isValidPin) {
         	request.setAttribute("error", "Invalid pin please try again");

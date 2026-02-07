@@ -3,37 +3,43 @@
     "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
     "http://struts.apache.org/dtds/struts-config_1_3.dtd">   -->
 <struts-config>
-
+	<message-resources parameter="ApplicationResources"/>
+	
     <form-beans>    
        	<!-- Login -->
 	    <form-bean name="loginForm"  type="com.demo.form.auth.LoginForm"/>
-	
+		<form-bean name="userHistoryForm"  type="com.demo.form.UserHistoryForm"/>
 		
 		<!-- ADMIN -->
+		<form-bean name="userReportForm" type="com.demo.form.admin.user.UserReportForm"/>
+		<form-bean name="updateUserForm" type="com.demo.form.admin.user.UpdateUserForm"/>
+		<form-bean name="resetPasswordForm" type="com.demo.form.admin.user.ResetPasswordForm"/>
 		<form-bean name="createUserForm"  type="com.demo.form.admin.user.CreateUserForm"/>
 		<form-bean name="createCardForm"  type="com.demo.form.admin.card.CreateCardForm"/>
-		
+		<form-bean name="resetPinForm"  type="com.demo.form.admin.card.ResetPinForm"/>
+		<form-bean name="cardReportForm"  type="com.demo.form.admin.card.CardReportForm"/>	
 		
 		<!-- ATM -->
 	   	<form-bean name="enterCardForm" type="com.demo.form.atm.EnterCardForm"/>	
 		<form-bean name="enterPinForm"  type="com.demo.form.atm.EnterPinForm"/>
-		
 		<form-bean name="withdrawForm"  type="com.demo.form.atm.WithdrawForm"/>
 		<form-bean name="transferForm"  type="com.demo.form.atm.TransferForm"/>
 		<form-bean name="depositForm"  type="com.demo.form.atm.DepositForm"/>
 		<form-bean name="changePinForm"  type="com.demo.form.atm.ChangePinForm"/>
 		<form-bean name="succesTransactionForm"  type="com.demo.form.atm.SuccessTransactionForm"/>
+		<form-bean name="cardHistoryForm"  type="com.demo.form.atm.CardHistoryForm"/>
 		
     </form-beans>
 
  	<action-mappings>
     
 		<!-- home -->
-		<action path="/home" type="com.demo.action.HomeAction">
-		
+		<action 
+			path="/home" 
+			type="com.demo.action.HomeAction"
+		>
             <forward name="home" path="/WEB-INF/jsp/home.jsp"/>
             <forward name="login" path="/auth/login.do" redirect="true"/>
-            
         </action>
         
         
@@ -42,24 +48,85 @@
 	            type="com.demo.action.auth.LoginAction"
 	            name="loginForm"
 	            scope="request"
-	            input="/WEB-INF/jsp/auth/login.jsp">
+	            input="/WEB-INF/jsp/auth/login.jsp"
+	            validate="true"
+	    >
 	        <forward name="login" path="/WEB-INF/jsp/auth/login.jsp"/>
 	        <forward name="home" path="/home.do" redirect="true"/>
 	    </action>
 	    
-	   
 	     <action path="/auth/logout"
 	            type="com.demo.action.auth.LogoutAction">
 	        <forward name="login" path="/WEB-INF/jsp/auth/login.jsp"/>
 	    </action>
 	    
+        <action path="/user/history"
+	            type="com.demo.action.UserHistoryAction"
+	            name="userHistoryForm"
+	            scope="request"
+	          	input="/WEB-INF/jsp/user-history.jsp"
+	            
+	            validate="true">
+	        <forward name="history" path="/WEB-INF/jsp/user-history.jsp"/>
+	    </action>
+	    
+	     
 	    
         <!-- ADMIN -->
+        <action path="/admin" forward="/WEB-INF/jsp/admin/dashboard.jsp">
+	    </action>
+	    
+	    <action path="/admin/user"
+	            type="com.demo.action.admin.user.UserReportAction"
+	            name="userReportForm"
+	            scope="request">
+	        <forward name="user" path="/WEB-INF/jsp/admin/user/user-report.jsp"/>
+	    </action>
+	    
+	    <action path="/admin/user/update"
+	            type="com.demo.action.admin.user.UpdateUserAction"
+	            name="updateUserForm"
+	            scope="request" 
+	            input="/WEB-INF/jsp/admin/user/update-user.jsp"
+	            validate="true">
+	        <forward name="update" path="/WEB-INF/jsp/admin/user/update-user.jsp"/>
+			<forward name="user-report" path="/admin/user.do" redirect="true" />
+	    </action>
+	    
+	    <action path="/admin/user/reset-password"
+	            type="com.demo.action.admin.user.ResetPasswordAction"
+	            name="resetPasswordForm"
+	            scope="request"
+	            input="/WEB-INF/jsp/admin/user/reset-password.jsp"
+	            validate="true">
+	        <forward name="reset" path="/WEB-INF/jsp/admin/user/reset-password.jsp"/>
+	        <forward name="user-report" path="/admin/user.do" redirect="true" />
+	        
+	    </action>
+	    
+	    <action path="/admin/card"
+	            type="com.demo.action.admin.card.CardReportAction"
+	            name="cardReportForm"
+	            scope="request">
+	        <forward name="card" path="/WEB-INF/jsp/admin/card/card-report.jsp"/>
+	    </action>
+	    
+	    <action path="/admin/card/reset-pin"
+	            type="com.demo.action.admin.card.ResetPinAction"
+	            name="resetPinForm"
+	            scope="request"
+	            input="/WEB-INF/jsp/admin/card/reset-pin.jsp"
+	            validate="true">
+	        <forward name="reset" path="/WEB-INF/jsp/admin/card/reset-pin.jsp"/>
+	        <forward name="card-report" path="/admin/card.do" redirect="true" />
+	        
+	    </action>
         <action path="/admin/user/create"
 	            type="com.demo.action.admin.user.CreateUserAction"
 	            name="createUserForm"
 	            scope="request"
-	            input="/WEB-INF/jsp/admin/user/create-user.jsp">
+	            input="/WEB-INF/jsp/admin/user/create-user.jsp"
+	            validate="true">
 	        <forward name="create-user" path="/WEB-INF/jsp/admin/user/create-user.jsp"/>
 	    </action>
 	    
@@ -102,51 +169,63 @@
 	            type="com.demo.action.atm.TransferAction"
 	            name = "transferForm"
 	            scope = "request"
-	            input = "/WEB-INF/jsp/atm/transfer.jsp">
+	            input = "/WEB-INF/jsp/atm/transfer.jsp"
+	            validate="true">
 			<forward name="transfer" path="/WEB-INF/jsp/atm/transfer.jsp"/>
-	        <forward name="success" path="/atm/success-transaction.do" redirect="true"/>
+	        <forward name="success" path="/atm/enter-pin.do" redirect="true"/>
 	    </action>
 	    
 	    <action path="/atm/withdraw"
-	            type="com.demo.action.atm.WithdrawAction">
-			<forward name="transfer" path="/WEB-INF/jsp/atm/withdraw.jsp"/>
-	        <forward name="success" path="/WEB-INF/jsp/atm/success-transaction.do" redirect="true"/>
+	            type="com.demo.action.atm.WithdrawAction"
+				name = "withdrawForm"
+	            input="/WEB-INF/jsp/atm/withdraw.jsp"
+	            scope="request"
+	            validate="true">
+			<forward name="withdraw" path="/WEB-INF/jsp/atm/withdraw.jsp"/>
+	        <forward name="success" path="/atm/enter-pin.do" redirect="true"/>
 	    </action>
 	    
 	    
 	    <action path="/atm/deposit"
-	            type="com.demo.action.atm.DepositAction">
-			<forward name="transfer" path="/WEB-INF/jsp/atm/deposit.jsp"/>
-	        <forward name="success" path="/WEB-INF/jsp/atm/success-transaction.jsp" redirect="true"/>
+	            type="com.demo.action.atm.DepositAction"
+	            name="depositForm"
+	            scope="request"
+	            input="/WEB-INF/jsp/atm/deposit.jsp"
+	            validate="true"
+	            >
+			<forward name="deposit" path="/WEB-INF/jsp/atm/deposit.jsp"/>
+	        <forward name="success" path="/atm/enter-pin.do" redirect="true"/>
 	    </action>
 	    
+	    <action path="/atm/enquiry"
+	            type="com.demo.action.atm.EnquiryAction"
+	            >
+			<forward name="menu" path="/atm/menu.do"/>
+	    </action>
 	    
 	   	<action path="/atm/change-pin"
-	            type="com.demo.action.atm.ChangePinAction">
+	            type="com.demo.action.atm.ChangePinAction"
+	            name="changePinForm"
+	            scope="request"
+	            validate="true"
+	            input="/WEB-INF/jsp/atm/change-pin.jsp">
 	        <forward name="change-pin" path="/WEB-INF/jsp/atm/change-pin.jsp"/>
-	        <forward name="success" path="/WEB-INF/jsp/atm/success-transaction.jsp" redirect="true"/>
+	        <forward name="success" path="/atm/enter-pin.do" redirect="true"/>
+	    </action>
+	    
+	    <action path="/atm/card/history"
+	            type="com.demo.action.atm.CardHistoryAction"
+	            name="cardHistoryForm"
+	            scope="request"
+	            input="/WEB-INF/jsp/atm/card-history.jsp"
+	            validate="true">
+	        <forward name="history" path="/WEB-INF/jsp/atm/card-history.jsp"/>	        
 	    </action>
 	    
 	    <action path="/atm/success-transaction"
 	            type="com.demo.action.atm.SuccessTransactionAction">
 	        <forward name="next" path="/WEB-INF/jsp/atm/success-transaction.jsp" redirect="true"/>
 	    </action> 
-	    
-	    
-     
-        <!-- ADMIN flow -->
-        <!-- <action path="/admin/user/index"          type="com.demo.action.admin.UserIndexAction"/>
-        <action path="/admin/user/update"         type="com.demo.action.admin.UserUpdateAction"/>
-        <action path="/admin/user/reset-password" type="com.demo.action.admin.UserResetPasswordAction"/>
-        <action path="/admin/card/index"          type="com.demo.action.admin.CardIndexAction"/>
-        <action path="/admin/card/create"         type="com.demo.action.admin.CardCreateAction"/>
-        <action path="/admin/card/reset-pin"      type="com.demo.action.admin.CardResetPinAction"/>
-        <action path="/admin/reports"             type="com.demo.action.admin.ReportsAction"/>
-        <action path="/admin/report/by-user"      type="com.demo.action.admin.ReportByUserAction"/>
-        <action path="/admin/report/by-card"      type="com.demo.action.admin.ReportByCardAction"/> -->
-		    
-		    
-		    
     </action-mappings>
   
     

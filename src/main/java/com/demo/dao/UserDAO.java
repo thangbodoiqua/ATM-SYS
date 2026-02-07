@@ -8,12 +8,9 @@ public interface UserDAO {
 
 	UserDTO findByUsername(String username);
 
-	boolean existsByUsername(String username);
-
-	boolean create(UserDTO user);
+	boolean save(UserDTO user);
 
 	boolean update(UserDTO user);
 
-//	boolean deleteById(long id);
 	List<UserDTO> findAll();
 }
